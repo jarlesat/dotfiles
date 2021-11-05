@@ -1,0 +1,48 @@
+[bar/myBar]
+font-0 = "DejaVu Sans Mono:style=Book"
+font-1 = "DejaVu Sans:style=Book"
+font-2 = "Noto Sans Mono:style=Regular"
+font-3 = "Noto Color Emoji:style=Regular"
+monitor = ${env:MONITOR}
+
+modules-right = xkeyboard wired-network date
+
+modules-left = herbstluftwm
+
+[module/date]
+type = internal/date
+date = %Y-%m-%d%
+time = %H:%M
+label = %date% %time%
+
+[module/wired-network]
+type = internal/network
+interface = eth0
+#label-connected = 
+
+[module/xkeyboard]
+type = internal/xkeyboard
+format = <label-layout> <label-indicator>
+label-layout = %icon%
+layout-icon-default = ???
+layout-icon-0 = us;%{A1:setxkbmap -layout no:}[US]%{A}
+layout-icon-1 = no;%{A1:setxkbmap -layout us -variant altgr-intl -option nodeadkeys:}[NO]%{A}
+
+label-indicator-on = %icon%
+label-indicator-off = %icon%
+label-indicator-on-capslock = %{R:} A %{R-}
+label-indicator-off-capslock =  A 
+label-indicator-on-numlock = %{R} 9 %{R-}
+label-indicator-off-numlock =  9 
+label-indicator-on-scrolllock = %{R} S %{R-}
+label-indicator-off-scrolllock =  S 
+
+[module/herbstluftwm]
+type = custom/script
+exec-if = ps -C herbstluftwm >/dev/null 2>&1
+#exec = MONITOR=Virtual1 /home/hojs/.config/polybar/herbstluftwm.sh --focused '%%{B#f0f} %s %%{B-}'
+exec = MONITOR=Virtual1 /home/hojs/.config/polybar/herbstluftwm.sh
+tail = true
+# US Flag: 🇺🇸
+# NO Flag: 🇳🇴
+
