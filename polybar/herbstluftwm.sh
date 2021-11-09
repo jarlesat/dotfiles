@@ -42,6 +42,8 @@ viewedElsewhereTag="$empty"
 focusedElsewhereTag="$empty"
 
 print_tags() {
+    printf "Xrandr '%s':" "$MONITOR"
+    printf "Herbstluftwm '%d' " "$1"
 	for tag in $(herbstclient tag_status "$1"); do
 		name=${tag#?}
 		state=${tag%$name}
@@ -106,10 +108,16 @@ while true; do
 done
 shift $(expr $OPTIND - 1)
 
+printf "\t\tSpecified monitor: '%s'" "$MONITOR"
 
 geom_regex='[[:digit:]]\+x[[:digit:]]\++[[:digit:]]\++[[:digit:]]\+'
 geom=$(xrandr --query | grep "^$MONITOR" | grep -o "$geom_regex")
 monitor=$(herbstclient list_monitors | grep "$geom" | cut -d: -f1)
+
+printf "\t\txrandr entry: '%s'" "$(xrandr --query | grep "^$MONITOR")"
+printf "\t\tGeometry: '%s'" "$geom"
+
+printf "\t\t"
 
 #read_args
 print_tags "$monitor"

@@ -15,6 +15,10 @@ modules-left = herbstluftwm
 
 tray-position = right
 
+#border-size = 20
+#border-color = #2399A8
+
+
 [module/date]
 type = internal/date
 date = %Y-%m-%d%
@@ -28,29 +32,32 @@ interface = eth0
 
 [module/keyboard-layout]
 type = internal/xkeyboard
-format = ⌨<label-layout>
+format = <label-layout>
 label-layout = %icon%
 layout-icon-default = ???
-layout-icon-0 = us;%{A1:setxkbmap -layout no:}[US]%{A}
-layout-icon-1 = no;%{A1:setxkbmap -layout us -variant altgr-intl -option nodeadkeys:}[NO%{T2}🇳🇴NO%{T-}]%{A}
+layout-icon-0 = us;%{A1:setxkbmap -layout no:}⌨[US]%{A}
+layout-icon-1 = no;%{A1:setxkbmap -layout us -variant altgr-intl -option nodeadkeys:}[⌨NO%{T2}NO%{T-}]%{A}
 
 [module/lock-keys]
 type = internal/xkeyboard
 format = <label-indicator>
 label-indicator-on = %icon%
 label-indicator-off = %icon%
-label-indicator-on-capslock = %{R:} A %{R-}
-label-indicator-off-capslock =  A 
+label-indicator-on-capslock = %{R} A %{R-}
+label-indicator-off-capslock = %{F#444444} A %{F-}
 label-indicator-on-numlock = %{R} 9 %{R-}
-label-indicator-off-numlock =  9 
+label-indicator-off-numlock = %{F#444444} 9 %{F-}
 label-indicator-on-scrolllock = %{R} S %{R-}
-label-indicator-off-scrolllock =  S 
+label-indicator-off-scrolllock = %{F#444444} S %{F-}
 
 [module/herbstluftwm]
 type = custom/script
 exec-if = ps -C herbstluftwm >/dev/null 2>&1
 #exec = MONITOR=Virtual1 ~/.config/polybar/herbstluftwm.sh --focused '%%{B#f0f} %s %%{B-}'
-exec = MONITOR=Virtual1 ~/.config/polybar/herbstluftwm.sh
+#exec = MONITOR=Virtual1 ~/.config/polybar/herbstluftwm.sh
+#exec = MONITOR=Virtual1-1 ~/.config/polybar/herbstluftwm.sh
+#exec = MONITOR=${env:MONITOR} ~/.config/polybar/herbstluftwm.sh
+exec = ~/.config/polybar/herbstluftwm.sh
 tail = true
 # US Flag: 🇺🇸
 # NO Flag: 🇳🇴
