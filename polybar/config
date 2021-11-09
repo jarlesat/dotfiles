@@ -1,8 +1,10 @@
 [bar/myBar]
-font-0 = "DejaVu Sans Mono:style=Book"
-font-1 = "DejaVu Sans:style=Book"
-font-2 = "Noto Sans Mono:style=Regular"
-font-3 = "Noto Color Emoji:style=Regular"
+#font-0 = "DejaVu Sans Mono:style=Book:size=8"
+#font-1 = "DejaVu Sans:style=Book:size=8"
+#font-2 = "Noto Sans Mono:style=Regular:size=8"
+#font-3 = "Noto Color Emoji:style=Regular:size=8"
+font-0 = "fixed-medium mono:size=9"
+font-1 = "Liberation Sans:style=Regular:size=8"
 monitor = ${env:MONITOR}
 
 separator = "%{F#ff0000}|%{F-}"
@@ -10,6 +12,8 @@ separator = "%{F#ff0000}|%{F-}"
 modules-right = lock-keys keyboard-layout wired-network date
 
 modules-left = herbstluftwm
+
+tray-position = right
 
 [module/date]
 type = internal/date
@@ -28,7 +32,7 @@ format = ⌨<label-layout>
 label-layout = %icon%
 layout-icon-default = ???
 layout-icon-0 = us;%{A1:setxkbmap -layout no:}[US]%{A}
-layout-icon-1 = no;%{A1:setxkbmap -layout us -variant altgr-intl -option nodeadkeys:}[NO]%{A}
+layout-icon-1 = no;%{A1:setxkbmap -layout us -variant altgr-intl -option nodeadkeys:}[NO%{T2}🇳🇴NO%{T-}]%{A}
 
 [module/lock-keys]
 type = internal/xkeyboard
@@ -45,8 +49,8 @@ label-indicator-off-scrolllock =  S
 [module/herbstluftwm]
 type = custom/script
 exec-if = ps -C herbstluftwm >/dev/null 2>&1
-#exec = MONITOR=Virtual1 /home/hojs/.config/polybar/herbstluftwm.sh --focused '%%{B#f0f} %s %%{B-}'
-exec = MONITOR=Virtual1 /home/hojs/.config/polybar/herbstluftwm.sh
+#exec = MONITOR=Virtual1 ~/.config/polybar/herbstluftwm.sh --focused '%%{B#f0f} %s %%{B-}'
+exec = MONITOR=Virtual1 ~/.config/polybar/herbstluftwm.sh
 tail = true
 # US Flag: 🇺🇸
 # NO Flag: 🇳🇴

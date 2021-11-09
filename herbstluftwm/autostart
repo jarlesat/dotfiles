@@ -6,10 +6,15 @@ hc() {
     herbstclient "$@"
 }
 
+
 hc emit_hook reload
 
 xsetroot -solid '#000000'
 #start-pulseaudio-x11
+
+#TERMINAL_APP=terminator
+#TERMINAL_APP=xterm
+TERMINAL_APP=gnome_terminal
 
 # remove all existing keybindings
 hc keyunbind --all
@@ -37,7 +42,7 @@ hc keybind $Mod-Shift-q quit
 #hc keybind $Mod-Shift-r reload
 hc keybind $Mod-Shift-r spawn dmenu_run
 hc keybind $Mod-Shift-c close
-hc keybind $Mod-Return spawn terminator
+hc keybind $Mod-Return spawn xterm
 
 #hc keybind $Mod-Control-Shift-u spawn ~/bin/layout_switch.sh us
 #hc keybind $Mod-Control-Shift-n spawn ~/bin/layout_switch.sh no
