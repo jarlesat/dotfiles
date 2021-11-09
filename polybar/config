@@ -5,7 +5,9 @@ font-2 = "Noto Sans Mono:style=Regular"
 font-3 = "Noto Color Emoji:style=Regular"
 monitor = ${env:MONITOR}
 
-modules-right = xkeyboard wired-network date
+separator = "%{F#ff0000}|%{F-}"
+
+modules-right = lock-keys keyboard-layout wired-network date
 
 modules-left = herbstluftwm
 
@@ -20,14 +22,17 @@ type = internal/network
 interface = eth0
 #label-connected = 
 
-[module/xkeyboard]
+[module/keyboard-layout]
 type = internal/xkeyboard
-format = <label-layout> <label-indicator>
+format = ⌨<label-layout>
 label-layout = %icon%
 layout-icon-default = ???
 layout-icon-0 = us;%{A1:setxkbmap -layout no:}[US]%{A}
 layout-icon-1 = no;%{A1:setxkbmap -layout us -variant altgr-intl -option nodeadkeys:}[NO]%{A}
 
+[module/lock-keys]
+type = internal/xkeyboard
+format = <label-indicator>
 label-indicator-on = %icon%
 label-indicator-off = %icon%
 label-indicator-on-capslock = %{R:} A %{R-}
