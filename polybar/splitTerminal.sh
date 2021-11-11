@@ -118,8 +118,27 @@ create_virtual_monitors() {
     done
 }
 
-GEOMETRY=$(extract_geometry $@)
-echo $GEOMETRY
-THREE=( $(divide_three $GEOMETRY) )
-echo ${THREE[@]}
-create_virtual_monitors $@ "${THREE[@]}"
+#GEOMETRY=$(extract_geometry $@)
+#echo $GEOMETRY
+#THREE=( $(divide_three $GEOMETRY) )
+#echo ${THREE[@]}
+#create_virtual_monitors $@ "${THREE[@]}"
+
+largest_monitor() {
+    local monitors=()
+    while read m; do
+        if [[ $m =~ (^[-[:alnum:]_]*)[^[:digit:]]*([[:digit:]]+)x([[:digit:]]+)\+[[:digit:]]+\+[[:digit:]]+ ]]; then
+            local size=$( expr ${BASH_REMATCH[2]} \* ${BASH_REMATCH[3]} )
+            local thisMonitor="$size,${BASH_REMATCH[1]}"
+            monitors+=($thisMonitor)
+        fi
+    done <<< $(xrandr --query | grep " connected")
+    if [[ ${#monitors[@]} -gt 1 ]]; then
+        IFS=$'\n' monitors=($(sort -b -n -r -t , -k 1 <<<"${monitors[*]}")); unset IFS
+    fi
+    if [[ ${monitors[0]} =~ [[:digit:]]*,(.*) ]]; then
+        echo ${BASH_REMATCH[1]}
+    fi
+}
+
+largest_monitor
