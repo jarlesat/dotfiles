@@ -118,12 +118,6 @@ create_virtual_monitors() {
     done
 }
 
-#GEOMETRY=$(extract_geometry $@)
-#echo $GEOMETRY
-#THREE=( $(divide_three $GEOMETRY) )
-#echo ${THREE[@]}
-#create_virtual_monitors $@ "${THREE[@]}"
-
 largest_monitor() {
     local monitors=()
     while read m; do
@@ -141,4 +135,16 @@ largest_monitor() {
     fi
 }
 
+primary_monitor() {
+    local xrandrData=$(xrandr --query | grep "primary")
+    if [[ $xrandrData =~ (^[-[:alnum:]_]*).* ]]; then
+        echo ${BASH_REMATCH[1]}
+    fi
+}
+#GEOMETRY=$(extract_geometry $@)
+#echo $GEOMETRY
+#THREE=( $(divide_three $GEOMETRY) )
+#echo ${THREE[@]}
+#create_virtual_monitors $@ "${THREE[@]}"
 largest_monitor
+primary_monitor
