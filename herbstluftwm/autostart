@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # this is a simple config for herbstluftwm
+. ./monitorGeometry.sh
 
 hc() {
     herbstclient "$@"
@@ -177,10 +178,13 @@ hc detect_monitors
 hc set auto_detect_monitors 0
 # 3840 x 2160
 
-hc keybind $Mod-F1 chain , detect_monitors , spawn /etc/xdg/herbstluftwm/restartpanels.sh
+hc keybind $Mod-F1 chain , spawn ./removeVirtualMonitors.sh, detect_monitors
 
-hc keybind $Mod-F2 chain , set_monitors 1920x2160+0+0 1920x2160+1920+0 , spawn /etc/xdg/herbstluftwm/restartpanels.sh
-hc keybind $Mod-Shift-F2 chain , set_monitors 3840x1080+0+0 3840x1080+0+1080 , spawn /etc/xdg/herbstluftwm/restartpanels.sh
+#hc keybind $Mod-F2 chain , set_monitors 1920x2160+0+0 1920x2160+1920+0 , spawn /etc/xdg/herbstluftwm/restartpanels.sh
+#hc keybind $Mod-Shift-F2 chain , set_monitors 3840x1080+0+0 3840x1080+0+1080 , spawn /etc/xdg/herbstluftwm/restartpanels.sh
+
+hc keybind $Mod-F2 chain , spawn ./divideInTwo.sh --vertical LVDS , detect_monitors 
+hc keybind $Mod-Shift-F2 chain ,  spawn ./divideInTwo.sh --horizontal LVDS , detect_monitors 
 
 hc keybind $Mod-F3 chain , set_monitors 1920x2160+0+0 1920x1080+1920+0 1920x1080+1920+1080 , spawn /etc/xdg/herbstluftwm/restartpanels.sh
 hc keybind $Mod-Shift-F3 chain , set_monitors 1920x1080+0+0 1920x1080+0+1080 1920x2160+1920+0 , spawn /etc/xdg/herbstluftwm/restartpanels.sh

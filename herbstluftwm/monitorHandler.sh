@@ -1,8 +1,4 @@
-#!/bin/bash
-
-. ./monitorGeometry.sh
-
-VIRTUAL_MONITOR_KEY="hlwm"
+VIRTUAL_MONITOR_KEY=${VIRTUAL_MONITOR_KEY:-"hlwm"}
 
 remove_virtual_monitors() { 
     xrandr --listactivemonitors | grep "$VIRTUAL_MONITOR_KEY" | while read s; do
@@ -26,21 +22,3 @@ create_virtual_monitors() {
     done
 }
 
-split_once() {
-    remove_virtual_monitors
-    local geometry=$(extract_geometry "$1")
-    echo "Geometry $geometry"
-    local newMonitors=( $(divide_vertical "$geometry") )
-    echo "New monitors ${newMonitors[*]}"
-    create_virtual_monitors "$1" ${newMonitors[*]}
-}
-
-#GEOMETRY=$(extract_geometry $@)
-#echo $GEOMETRY
-#THREE=( $(divide_three $GEOMETRY) )
-#echo ${THREE[@]}
-#create_virtual_monitors $@ "${THREE[@]}"
-#largest_monitor
-#primary_monitor
-echo "$(extract_geometry "LVDS")"
-split_once "LVDS"
