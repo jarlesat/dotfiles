@@ -1,30 +1,35 @@
 #!/bin/bash
 
 # this is a simple config for herbstluftwm
-. ./monitorGeometry.sh
 
 hc() {
     herbstclient "$@"
 }
-
 
 hc emit_hook reload
 
 xsetroot -solid '#000000'
 #start-pulseaudio-x11
 
-#TERMINAL_APP=terminator
-#TERMINAL_APP=xterm
-TERMINAL_APP=gnome_terminal
-
 # remove all existing keybindings
 hc keyunbind --all
 
 Mod=Mod4
+#Monitor=( ($ ~/.config/herbstluftwm/largestMonitor.sh) )
+Monitor="Virtual1"
 
 #hc set wmname LG3D
 
-hc keybind $Mod-Control-Shift-space spawn ~/.config/herbstluftwm/q3terminal.sh
+#hc keybind $Mod-Control-Shift-space spawn ~/.config/herbstluftwm/q3terminal.sh
+hc keybind $Mod-Control-Shift-space spawn ~/.config/herbstluftwm/q3terminal_v2.sh top
+hc keybind $Mod-Home spawn ~/.config/herbstluftwm/q3terminal_v2.sh left
+hc keybind $Mod-End spawn ~/.config/herbstluftwm/q3terminal_v2.sh right
+hc keybind $Mod-Page_Up spawn ~/.config/herbstluftwm/q3terminal_v2.sh top
+hc keybind $Mod-Page_Down spawn ~/.config/herbstluftwm/q3terminal_v2.sh bottom
+hc keybind $Mod-Shift-Home move left
+hc keybind $Mod-Shift-End move right
+hc keybind $Mod-Shift-Page_Up move top
+hc keybind $Mod-Shift-Page_Down move bottom
 
 #hc keybind 0x1008ff13 spawn amixer set Master 10+ unmute
 #hc keybind 0x1008ff11 spawn amixer set Master 10- unmute
@@ -43,7 +48,7 @@ hc keybind $Mod-Shift-q quit
 #hc keybind $Mod-Shift-r reload
 hc keybind $Mod-Shift-r spawn dmenu_run
 hc keybind $Mod-Shift-c close
-hc keybind $Mod-Return spawn xterm
+hc keybind $Mod-Return spawn terminator
 
 #hc keybind $Mod-Control-Shift-u spawn ~/bin/layout_switch.sh us
 #hc keybind $Mod-Control-Shift-n spawn ~/bin/layout_switch.sh no
@@ -93,13 +98,14 @@ hc keybind $Mod-Control-Up      resize up +$resizestep
 hc keybind $Mod-Control-Right   resize right +$resizestep
 
 # tags
-tag_names=( {1..9} 0 dev{1..9} dev0 scratchpad )
+tag_names=( {1..9} 0 dev{1..9} dev0 )
 tag_keys=( {1..9} 0 )
 
 hc rename default "${tag_names[0]}" || true
 for i in ${!tag_names[@]} ; do
     hc add "${tag_names[$i]}"
 done
+
 for i in ${!tag_keys[@]} ; do
     hc keybind "$Mod-$i" use "$i"
     hc keybind "$Mod-Shift-$i" move "$i"
@@ -162,6 +168,8 @@ hc unrule -F
 hc rule focus=on # normally do not focus new clients
 # give focus to most common terminals
 hc rule class~'(.*[Rr]xvt.*|.*[Tt]erm|Konsole)' focus=on
+
+#idea
 hc rule windowtype~'_NET_WM_WINDOW_TYPE_(DIALOG|UTILITY|SPLASH)' pseudotile=on
 hc rule windowtype='_NET_WM_WINDOW_TYPE_DIALOG' focus=on
 hc rule windowtype~'_NET_WM_WINDOW_TYPE_(NOTIFICATION|DOCK)' manage=off
@@ -178,22 +186,29 @@ hc detect_monitors
 hc set auto_detect_monitors 0
 # 3840 x 2160
 
-hc keybind $Mod-F1 chain , spawn ./removeVirtualMonitors.sh, detect_monitors
+hc keybind $Mod-F1 spawn ~/.config/herbstluftwm/divide.sh --none Virtual1
 
-#hc keybind $Mod-F2 chain , set_monitors 1920x2160+0+0 1920x2160+1920+0 , spawn /etc/xdg/herbstluftwm/restartpanels.sh
-#hc keybind $Mod-Shift-F2 chain , set_monitors 3840x1080+0+0 3840x1080+0+1080 , spawn /etc/xdg/herbstluftwm/restartpanels.sh
+hc keybind $Mod-F2 spawn ~/.config/herbstluftwm/divide.sh --vertical Virtual1
 
-hc keybind $Mod-F2 chain , spawn ./divideInTwo.sh --vertical LVDS , detect_monitors 
-hc keybind $Mod-Shift-F2 chain ,  spawn ./divideInTwo.sh --horizontal LVDS , detect_monitors 
+hc keybind $Mod-Shift-F2 spawn ~/.config/herbstluftwm/divide.sh --horizontal Virtual1
 
-hc keybind $Mod-F3 chain , set_monitors 1920x2160+0+0 1920x1080+1920+0 1920x1080+1920+1080 , spawn /etc/xdg/herbstluftwm/restartpanels.sh
-hc keybind $Mod-Shift-F3 chain , set_monitors 1920x1080+0+0 1920x1080+0+1080 1920x2160+1920+0 , spawn /etc/xdg/herbstluftwm/restartpanels.sh
-hc keybind $Mod-Ctrl-F3 chain , set_monitors 3840x1080+0+0 1920x1080+0+1080 1920x1080+1920+1080 , spawn /etc/xdg/herbstluftwm/restartpanels.sh
-hc keybind $Mod-Shift-Ctrl-F3 chain , set_monitors 3840x1080+0+1080 1920x1080+0+0 1920x1080+1920+0 , spawn /etc/xdg/herbstluftwm/restartpanels.sh
+hc keybind $Mod-F3 spawn ~/.config/herbstluftwm/divide.sh --right Virtual1
 
-hc keybind $Mod-F4 chain , set_monitors 1920x1080+0+0 1920x1080+1920+0 1920x1080+0+1080 1920x1080+1920+1080 , spawn /etc/xdg/herbstluftwm/restartpanels.sh
+hc keybind $Mod-Shift-F3 spawn ~/.config/herbstluftwm/divide.sh --left Virtual1
 
-hc keybind $Mod-F5 chain , set_monitors 1920x2160+960+0 960X1080+0+0 960x1080+0+1080 960X1080+2880+0 960x1080+2880+1080 , spawn /etc/xdg/herbstluftwm/restartpanels.sh
+hc keybind $Mod-Ctrl-F3 spawn ~/.config/herbstluftwm/divide.sh --bottom Virtual1
+
+hc keybind $Mod-Shift-Ctrl-F3 spawn ~/.config/herbstluftwm/divide.sh --top Virtual1
+
+hc keybind $Mod-F4 spawn ~/.config/herbstluftwm/divide.sh --vertical --horizontal Virtual1
+
+#    hc keybind $Mod-F5 chain \
+#        , set_monitors 1920x2160+960+0 960X1080+0+0 960x1080+0+1080 960X1080+2880+0 960x1080+2880+1080 \
+#        , add_monitor $additionalMonitor \
+#        , focus_monitor 5 \
+#        , use right \
+#        , focus_monitor 0 \
+#        , spawn /etc/xdg/herbstluftwm/restartpanels.sh
 
 
 # find the panel
@@ -207,4 +222,7 @@ done
 if [ -s ~/.Xmodmap ]; then
     xmodmap ~/.Xmodmap
 fi
+
+#hc rule windowtype~'_NET_WM_WINDOW_TYPE_(DIALOG|UTILITY|SPLASH)' manage=off focus=on
+#hc rule windowtype~'_NET_WM_WINDOW_TYPE_(NOTIFICATION|DOCK)' manage=off focus=off
 

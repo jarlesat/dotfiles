@@ -1,7 +1,7 @@
 #!/bin/bash
 
 usage() {
-    echo "Either --horizontal, --vertical --left, --right, --top or --bottom must be set."
+    echo "Either --none, --horizontal, --vertical --left, --right, --top or --bottom must be set."
 }
 
 hc() {
@@ -10,12 +10,10 @@ hc() {
 
 cd "${BASH_SOURCE%/*}"
 
-./debug.sh "$0 \"$@\""
-
 . ./monitorGeometry.sh
 . ./monitorHandler.sh
 
-TEMP=`getopt -o lrtbhv -l left,right,top,bottom,horizontal,vertical -- "$@"`
+TEMP=`getopt -o lrtbhv -l left,right,top,bottom,horizontal,vertical,none -- "$@"`
 
 eval set -- "$TEMP"
 
@@ -27,6 +25,7 @@ while true; do
     -b|--bottom) BOTTOM=1 ; shift 1 ;;
     -h|--horizontal) HORIZONTAL=1 ; shift 1 ;;
     -v|--vertical) VERTICAL=1 ; shift 1 ;;
+    --none) NONE-1 ; shift 1 ;;
 
     -- ) shift ; break ;;
 #    * ) printf "Args: '$1'" ; shift ;;
@@ -61,6 +60,8 @@ elif [[ -n $RIGHT ]]; then
 elif [[ -n $BOTTOM ]]; then
     newMonitors=( $(divide_horizontal "$geometry") )
     newMonitors=( ${newMonitors[0]} $(divide_vertical "${newMonitors[1]}" ) )
+elif [[ -n $NONE ]]; then
+    
 else
     usage
     exit 1
@@ -70,4 +71,4 @@ fi
 echo "create_virtual_monitors '$monitorName' ${newMonitors[*]}"
 create_virtual_monitors "$monitorName" ${newMonitors[*]}
 herbstclient detect_monitors
-
+/etc/xdg/herbstluftwm/restartpanels.sh
