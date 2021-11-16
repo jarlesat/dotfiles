@@ -1,12 +1,5 @@
 #!/bin/bash
 
-cd "${BASH_SOURCE%/*}"
-
-./debug.sh "$0 \"$@\""
-
-. ./monitorGeometry.sh
-. ./monitorHandler.sh
-
 usage() {
     echo "Either --horizonal or --vertical must be set."
 }
@@ -14,6 +7,13 @@ usage() {
 hc() {
     herbstclient "$@"
 }
+
+cd "${BASH_SOURCE%/*}"
+
+./debug.sh "$0 \"$@\""
+
+. ./monitorGeometry.sh
+. ./monitorHandler.sh
 
 TEMP=`getopt -o hv -l horizontal,vertical -- "$@"`
 
@@ -38,16 +38,9 @@ fi
 
 remove_virtual_monitors
 geometry=$(extract_geometry "$1")
-if [[ -n $VERTICAL ]]; then
-    newMonitors=( $(divide_vertical "$geometry") )
-elif [[ -n $HORIZONTAL ]]; then
-    newMonitors=( $(divide_horizontal "$geometry") )
-else
-    usage
-    exit 1
-fi
+newMonitors=( $(divide_vertical "$geometry") )
+newMonitors=( $(divide_horizontal "${newMonitors[0]}" ) $(divide_horizontal "${newMonitors[1]}" ) )
 
-./debug.sh "create_virtual_monitors '$monitorName' ${newMonitors[*]}" >> ~/.config/herbstluftwm/debug.log
-
+echo "create_virtual_monitors '$monitorName' ${newMonitors[*]}"
 create_virtual_monitors "$monitorName" ${newMonitors[*]}
 

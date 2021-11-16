@@ -16,8 +16,10 @@ create_virtual_monitors() {
     for i in "${!monitors[@]}"; do
        if [ $i -eq 0 ]; then
             xrandr --setmonitor "$origMonitor-$VIRTUAL_MONITOR_KEY$i" "${monitors[$i]}" "$origMonitor"
+            ./debug.sh "xrandr --setmonitor $origMonitor-$VIRTUAL_MONITOR_KEY$i ${monitors[$i]} $origMonitor"
         else
             xrandr --setmonitor "$origMonitor-$VIRTUAL_MONITOR_KEY$i" "${monitors[$i]}" none
+            ./debug.sh "xrandr --setmonitor $origMonitor-$VIRTUAL_MONITOR_KEY$i ${monitors[$i]} none"
         fi
     done
 }
