@@ -1,7 +1,5 @@
 #!/bin/bash
 
-. ./monitorGeometry.sh
-
 monitors=()
 while read m; do
     if [[ $m =~ (^[-[:alnum:]_]*)[^[:digit:]]*([[:digit:]]+)x([[:digit:]]+)\+[[:digit:]]+\+[[:digit:]]+ ]]; then

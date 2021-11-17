@@ -15,17 +15,16 @@ xsetroot -solid '#000000'
 hc keyunbind --all
 
 Mod=Mod4
-#Monitor=( ($ ~/.config/herbstluftwm/largestMonitor.sh) )
-Monitor="Virtual1"
+Monitor=$(~/.config/herbstluftwm/largestMonitor.sh)
 
 #hc set wmname LG3D
 
-#hc keybind $Mod-Control-Shift-space spawn ~/.config/herbstluftwm/q3terminal.sh
-hc keybind $Mod-Control-Shift-space spawn ~/.config/herbstluftwm/q3terminal_v2.sh top
-hc keybind $Mod-Home spawn ~/.config/herbstluftwm/q3terminal_v2.sh left
-hc keybind $Mod-End spawn ~/.config/herbstluftwm/q3terminal_v2.sh right
-hc keybind $Mod-Page_Up spawn ~/.config/herbstluftwm/q3terminal_v2.sh top
-hc keybind $Mod-Page_Down spawn ~/.config/herbstluftwm/q3terminal_v2.sh bottom
+hc keybind $Mod-Control-Shift-space spawn ~/.config/herbstluftwm/q3terminal.sh
+#hc keybind $Mod-Control-Shift-space spawn ~/.config/herbstluftwm/q3terminal_v2.sh top
+#hc keybind $Mod-Home spawn ~/.config/herbstluftwm/q3terminal_v2.sh left
+#hc keybind $Mod-End spawn ~/.config/herbstluftwm/q3terminal_v2.sh right
+#hc keybind $Mod-Page_Up spawn ~/.config/herbstluftwm/q3terminal_v2.sh top
+#hc keybind $Mod-Page_Down spawn ~/.config/herbstluftwm/q3terminal_v2.sh bottom
 hc keybind $Mod-Shift-Home move left
 hc keybind $Mod-Shift-End move right
 hc keybind $Mod-Shift-Page_Up move top
@@ -186,21 +185,21 @@ hc detect_monitors
 hc set auto_detect_monitors 0
 # 3840 x 2160
 
-hc keybind $Mod-F1 spawn ~/.config/herbstluftwm/divide.sh --none Virtual1
+hc keybind $Mod-F1 spawn ~/.config/herbstluftwm/divide.sh --none $Monitor
 
-hc keybind $Mod-F2 spawn ~/.config/herbstluftwm/divide.sh --vertical Virtual1
+hc keybind $Mod-F2 spawn ~/.config/herbstluftwm/divide.sh --vertical $Monitor
 
-hc keybind $Mod-Shift-F2 spawn ~/.config/herbstluftwm/divide.sh --horizontal Virtual1
+hc keybind $Mod-Shift-F2 spawn ~/.config/herbstluftwm/divide.sh --horizontal $Monitor
 
-hc keybind $Mod-F3 spawn ~/.config/herbstluftwm/divide.sh --right Virtual1
+hc keybind $Mod-F3 spawn ~/.config/herbstluftwm/divide.sh --right $Monitor
 
-hc keybind $Mod-Shift-F3 spawn ~/.config/herbstluftwm/divide.sh --left Virtual1
+hc keybind $Mod-Shift-F3 spawn ~/.config/herbstluftwm/divide.sh --left $Monitor
 
-hc keybind $Mod-Ctrl-F3 spawn ~/.config/herbstluftwm/divide.sh --bottom Virtual1
+hc keybind $Mod-Ctrl-F3 spawn ~/.config/herbstluftwm/divide.sh --bottom $Monitor
 
-hc keybind $Mod-Shift-Ctrl-F3 spawn ~/.config/herbstluftwm/divide.sh --top Virtual1
+hc keybind $Mod-Shift-Ctrl-F3 spawn ~/.config/herbstluftwm/divide.sh --top $Monitor
 
-hc keybind $Mod-F4 spawn ~/.config/herbstluftwm/divide.sh --vertical --horizontal Virtual1
+hc keybind $Mod-F4 spawn ~/.config/herbstluftwm/divide.sh --vertical --horizontal $Monitor
 
 #    hc keybind $Mod-F5 chain \
 #        , set_monitors 1920x2160+960+0 960X1080+0+0 960x1080+0+1080 960X1080+2880+0 960x1080+2880+1080 \
