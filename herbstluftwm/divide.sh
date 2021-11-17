@@ -25,7 +25,7 @@ while true; do
     -b|--bottom) BOTTOM=1 ; shift 1 ;;
     -h|--horizontal) HORIZONTAL=1 ; shift 1 ;;
     -v|--vertical) VERTICAL=1 ; shift 1 ;;
-    --none) NONE-1 ; shift 1 ;;
+    --none) NONE=1 ; shift 1 ;;
 
     -- ) shift ; break ;;
 #    * ) printf "Args: '$1'" ; shift ;;
@@ -34,41 +34,38 @@ done
 shift $(expr $OPTIND - 1)
 monitorName="$1"
 
-if [[ -z $monitorName ]]; then
+if [[ -z $NONE && -z $monitorName ]]; then
     usage
     exit 1
 fi
 
 remove_virtual_monitors
-geometry=$(extract_geometry "$1")
-if [[ -n $VERTICAL && -n $HORIZONTAL ]]; then
-    newMonitors=( $(divide_horizontal "$geometry") )
-    newMonitors=( $(divide_vertical "${newMonitors[0]}") $(divide_vertical "${newMonitors[1]}" ) )
-elif [[ -n $VERTICAL ]]; then
-    newMonitors=( $(divide_vertical "$geometry") )
-elif [[ -n $HORIZONTAL ]]; then
-    newMonitors=( $(divide_horizontal "$geometry") )
-elif [[ -n $LEFT ]]; then
-    newMonitors=( $(divide_vertical "$geometry") )
-    newMonitors=( ${newMonitors[1]} $(divide_horizontal "${newMonitors[0]}" ) )
-elif [[ -n $TOP ]]; then
-    newMonitors=( $(divide_horizontal "$geometry") )
-    newMonitors=( ${newMonitors[1]} $(divide_vertical "${newMonitors[0]}" ) )
-elif [[ -n $RIGHT ]]; then
-    newMonitors=( $(divide_vertical "$geometry") )
-    newMonitors=( ${newMonitors[0]} $(divide_horizontal "${newMonitors[1]}" ) )
-elif [[ -n $BOTTOM ]]; then
-    newMonitors=( $(divide_horizontal "$geometry") )
-    newMonitors=( ${newMonitors[0]} $(divide_vertical "${newMonitors[1]}" ) )
-elif [[ -n $NONE ]]; then
-    
-else
-    usage
-    exit 1
+if [[ -z $NONE ]]; then
+    geometry=$(extract_geometry "$1")
+    if [[ -n $VERTICAL && -n $HORIZONTAL ]]; then
+        newMonitors=( $(divide_horizontal "$geometry") )
+        newMonitors=( $(divide_vertical "${newMonitors[0]}") $(divide_vertical "${newMonitors[1]}" ) )
+    elif [[ -n $VERTICAL ]]; then
+        newMonitors=( $(divide_vertical "$geometry") )
+    elif [[ -n $HORIZONTAL ]]; then
+        newMonitors=( $(divide_horizontal "$geometry") )
+    elif [[ -n $LEFT ]]; then
+        newMonitors=( $(divide_vertical "$geometry") )
+        newMonitors=( ${newMonitors[1]} $(divide_horizontal "${newMonitors[0]}" ) )
+    elif [[ -n $TOP ]]; then
+        newMonitors=( $(divide_horizontal "$geometry") )
+        newMonitors=( ${newMonitors[1]} $(divide_vertical "${newMonitors[0]}" ) )
+    elif [[ -n $RIGHT ]]; then
+        newMonitors=( $(divide_vertical "$geometry") )
+        newMonitors=( ${newMonitors[0]} $(divide_horizontal "${newMonitors[1]}" ) )
+    elif [[ -n $BOTTOM ]]; then
+        newMonitors=( $(divide_horizontal "$geometry") )
+        newMonitors=( ${newMonitors[0]} $(divide_vertical "${newMonitors[1]}" ) )
+    else
+        usage
+        exit 1
+    fi
+    create_virtual_monitors "$monitorName" ${newMonitors[*]}
 fi
-
-
-echo "create_virtual_monitors '$monitorName' ${newMonitors[*]}"
-create_virtual_monitors "$monitorName" ${newMonitors[*]}
 herbstclient detect_monitors
 /etc/xdg/herbstluftwm/restartpanels.sh
