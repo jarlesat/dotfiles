@@ -112,6 +112,7 @@ if [[ "$xrandrGeom" =~ ([[:digit:]]+)/[[:digit:]]+x([[:digit:]]+)/[[:digit:]]+\+
 fi
 
 hlwmMonitorIdx=$(herbstclient list_monitors | grep "$hlwmGeom" | cut -d: -f1)
+herbstclient pad $hlwmMonitorIdx 16
 
 #read_args
 print_tags "$hlwmMonitorIdx"
