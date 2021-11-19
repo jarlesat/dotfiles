@@ -38,12 +38,10 @@ viewedTag="%%{B#9CA668}%%{F#141414} %s %%{F-}%%{B-}"
 urgentTag="%%{B#FF0675}%%{F#141414} %s %%{F-}%%{B-}"
 emptyTag="%%{F#ababab} %s %%{F-}"
 notEmptyTag="%%{F#ffffff} %s %%{F-}"
-viewedElsewhereTag="$empty"
-focusedElsewhereTag="$empty"
+viewedElsewhereTag="$emptyTag"
+focusedElsewhereTag="$emptyTag"
 
 print_tags() {
-    printf "Xrandr '%s':" "$MONITOR"
-    printf "Herbstluftwm '%d' " "$1"
 	for tag in $(herbstclient tag_status "$1"); do
 		name=${tag#?}
 		state=${tag%$name}
@@ -51,12 +49,11 @@ print_tags() {
         activateEnd="%%{A}"
 		case "$state" in
 		'#')
-            # the tag is viewed on the specified MONITOR and it is focused. 
+            # the tag is viewed on the specified monitor and it is focused.
             printf "$focusedTag" "$name"
 			;;
 		'+')
-            # the tag is viewed on the specified MONITOR, but this monitor is not focused. 
-#			printf "Viewed %s " "$name"
+            # the tag is viewed on the specified monitor, but this monitor is not focused.
 			printf "%%{A1: herbstclient use %s :}$viewedTag%%{A}" "$name" "$name"
 			;;
 		'!')
@@ -68,17 +65,15 @@ print_tags() {
 			printf "%%{A1: herbstclient use %s :}$emptyTag%%{A}" "$name" "$name"
 			;;
         '-')
-            # - the tag is viewed on a different MONITOR, but this monitor is not focused.
-#			printf "$viewedElsewhereTag" "$name"
+            # - the tag is viewed on a different monitor, but this monitor is not focused.
 			printf "%%{A1: herbstclient use %s :}$viewedElsewhereTag%%{A}" "$name" "$name"
-#			printf '%s %s %s' "$activate" "$name" "$activateEnd"
 			;;
         ':')
             # : the tag is not empty
 			printf "%%{A1: herbstclient use %s :}$notEmptyTag%%{A}" "$name" "$name"
 			;;
         '%')
-            # % the tag is viewed on a different MONITOR and it is focused.
+            # % the tag is viewed on a different monitor and it is focused.
 			printf "%%{A1: herbstclient use %s :}$focusedElsewhereTag%%{A}" "$name" "$name"
 			;;
 		*)
@@ -108,24 +103,23 @@ while true; do
 done
 shift $(expr $OPTIND - 1)
 
-printf "\t\tSpecified monitor: '%s'" "$MONITOR"
+xrandrMonitorName=${1:-$MONITOR}
 
-geom_regex='[[:digit:]]\+x[[:digit:]]\++[[:digit:]]\++[[:digit:]]\+'
-geom=$(xrandr --query | grep "^$MONITOR" | grep -o "$geom_regex")
-monitor=$(herbstclient list_monitors | grep "$geom" | cut -d: -f1)
+xrandrGeom=$(xrandr --listactivemonitors | grep "$xrandrMonitorName")
 
-printf "\t\txrandr entry: '%s'" "$(xrandr --query | grep "^$MONITOR")"
-printf "\t\tGeometry: '%s'" "$geom"
+if [[ "$xrandrGeom" =~ ([[:digit:]]+)/[[:digit:]]+x([[:digit:]]+)/[[:digit:]]+\+([[:digit:]]+)\+([[:digit:]]+) ]]; then
+    hlwmGeom="${BASH_REMATCH[1]}x${BASH_REMATCH[2]}+${BASH_REMATCH[3]}+${BASH_REMATCH[4]}"
+fi
 
-printf "\t\t"
+hlwmMonitorIdx=$(herbstclient list_monitors | grep "$hlwmGeom" | cut -d: -f1)
 
 #read_args
-print_tags "$monitor"
+print_tags "$hlwmMonitorIdx"
 
 IFS="$(printf '\t')" herbstclient --idle | while read -r hook args; do
 	case "$hook" in
 	tag*)
-		print_tags "$monitor"
+		print_tags "$hlwmMonitorIdx"
 		;;
 	esac
 done

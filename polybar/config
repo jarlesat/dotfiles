@@ -13,7 +13,7 @@ modules-right = lock-keys keyboard-layout wired-network date
 
 modules-left = herbstluftwm
 
-tray-position = right
+#tray-position = right
 
 #border-size = 20
 #border-color = #2399A8
@@ -53,12 +53,6 @@ label-indicator-off-scrolllock = %{F#444444} S %{F-}
 [module/herbstluftwm]
 type = custom/script
 exec-if = ps -C herbstluftwm >/dev/null 2>&1
-#exec = MONITOR=Virtual1 ~/.config/polybar/herbstluftwm.sh --focused '%%{B#f0f} %s %%{B-}'
-#exec = MONITOR=Virtual1 ~/.config/polybar/herbstluftwm.sh
-#exec = MONITOR=Virtual1-1 ~/.config/polybar/herbstluftwm.sh
-#exec = MONITOR=${env:MONITOR} ~/.config/polybar/herbstluftwm.sh
-exec = ~/.config/polybar/herbstluftwm.sh
+exec = ~/.config/herbstluftwm/debug.sh ~/.config/polybar/herbstluftwm.sh
 tail = true
-# US Flag: 🇺🇸
-# NO Flag: 🇳🇴
 
