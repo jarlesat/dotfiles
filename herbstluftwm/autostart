@@ -218,6 +218,8 @@ hc keybind $Mod-F4 spawn ~/.config/herbstluftwm/divide.sh --vertical --horizonta
 #    "$panel" $monitor &
 #done
 
+~/.config/herbstluftwm/restartPolybar.sh
+
 if [ -s ~/.Xmodmap ]; then
     xmodmap ~/.Xmodmap
 fi
