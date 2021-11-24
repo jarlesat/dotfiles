@@ -68,4 +68,4 @@ if [[ -z $NONE ]]; then
     create_virtual_monitors "$monitorName" ${newMonitors[*]}
 fi
 herbstclient detect_monitors
-restartPolybar.sh
+./restartPolybar.sh
